@@ -14,6 +14,10 @@ app.use(express.urlencoded({extended:true,limit:"16kb"})) //taking data from url
 app.use(express.static("public")) //configuration for asset
 
 app.use(cookieParser())
+// routes import
 
+import userRouter from "./routes/user.route.js";
+//route declaration
+app.use("/api/v1/users",userRouter)
 
 export {app}
