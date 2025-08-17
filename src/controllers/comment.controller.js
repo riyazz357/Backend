@@ -95,16 +95,18 @@ const addComment = asyncHandler(async (req, res) => {
     const {videoId}=req.params
     const {content}=req.body
 
+    //validate the videoid
     if(!mongoose.Aggregate.isValidObjectId(videoId)|| !content?.trim()){
         throw new ApiError(400,"Invalid video or comment content is missing")
     }
-
+    // adding the comment in the database
     const newComment= await Comment.create({
         content,
         video:videoId,
         owner:req.user._id
     })
 
+    //checking comment is added or not
     if(!newComment){
         throw new ApiError(500,"Failed to create comment")
     }
@@ -157,10 +159,12 @@ const deleteComment = asyncHandler(async (req, res) => {
     const {commentId}=req.params
     const {content}=req.body
 
+    //validate the object it exist or not
     if(!mongoose.isValidObjectId(commentId)){
         throw new ApiError(404,"comment id is missing")
     }
 
+    //find the comment and check for the ownership
     const comment = await Comment.findById(commentId);
     if (!comment) {
         throw new ApiError(400,"comment not found")
